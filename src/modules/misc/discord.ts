@@ -11,6 +11,10 @@ export async function getPresence() {
     (activity: any) => activity.name === "Code"
   );
 
+  const watching = json.data.activities.find(
+    (activity: any) => activity.name === "Crunchyroll"
+  );
+
   return {
     coding:
       coding && coding.details
@@ -19,5 +23,12 @@ export async function getPresence() {
             details: coding.details,
           }
         : null,
+    watching:
+      watching && watching.details
+      ? {
+          state: watching.state,
+          details: watching.details,
+        }
+      : null,
   };
 }
