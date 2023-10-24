@@ -1,34 +1,46 @@
 import { env } from "../../../utils/envsafe";
 
+interface DiscordActivity {
+  name: string;
+  state: string | null;
+  details: string | null;
+}
+
+interface LanyardResponse {
+  data: {
+    activities: DiscordActivity[];
+  };
+}
+
 export async function getPresence() {
-  const data = await fetch(
-    `https://api.lanyard.rest/v1/users/${env.DISCORD_ID}`
-  );
+  try {
+    const response = await fetch(`https://api.lanyard.rest/v1/users/${env.DISCORD_ID}`);
 
-  const json = await data.json();
+    if (!response.ok) {
+      throw new Error(`Error fetching presence: HTTP ${response.status}`);
+    }
 
-  const coding = json.data.activities.find(
-    (activity: any) => activity.name === "Code"
-  );
+    const json: LanyardResponse = await response.json();
 
-  const watching = json.data.activities.find(
-    (activity: any) => activity.name === "Crunchyroll"
-  );
+    const coding = json.data.activities.find((activity) => activity.name === "Code");
+    const watching = json.data.activities.find((activity) => activity.name === "Crunchyroll");
 
-  return {
-    coding:
-      coding && coding.details
+    return {
+      coding: coding
         ? {
           state: coding.state,
           details: coding.details,
         }
         : null,
-    watching:
-      watching && watching.details
+      watching: watching
         ? {
           state: watching.state,
           details: watching.details,
         }
         : null,
-  };
+    };
+  } catch (error) {
+    console.error("Error fetching presence:", error);
+    throw error;
+  }
 }
