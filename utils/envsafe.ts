@@ -10,4 +10,5 @@ export const env = envsafe({
   LASTFM_TOKEN: str(),
   LASTFM_USER: str(),
   DISCORD_ID: str(),
+  TAUTULLI_KEY: str(),
 });

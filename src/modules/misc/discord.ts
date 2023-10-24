@@ -19,16 +19,16 @@ export async function getPresence() {
     coding:
       coding && coding.details
         ? {
-            state: coding.state,
-            details: coding.details,
-          }
+          state: coding.state,
+          details: coding.details,
+        }
         : null,
     watching:
       watching && watching.details
-      ? {
+        ? {
           state: watching.state,
           details: watching.details,
         }
-      : null,
+        : null,
   };
 }

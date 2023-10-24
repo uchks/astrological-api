@@ -1,6 +1,7 @@
 import { cors } from "@elysiajs/cors";
 import { Elysia } from "elysia";
 import { getPresence } from "./modules/misc/discord";
+import { getPlex } from "./modules/misc/plex";
 import { getSteam } from "./modules/misc/steam";
 import { getAlbums } from "./modules/music/albums";
 import { currentStream } from "./modules/music/streaming";
@@ -21,6 +22,7 @@ const app = new Elysia()
         "/fun": {
           "/steam": "GET",
           "/discord": "GET",
+          "/plex": "GET",
         },
       },
     ],
@@ -34,6 +36,7 @@ const app = new Elysia()
     fun
       .get("/steam", async () => getSteam)
       .get("/discord", async () => getPresence)
+      .get("/plex", async () => getPlex)
   )
   .listen(port);
 
